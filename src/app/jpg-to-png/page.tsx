@@ -4,13 +4,25 @@ import { RelatedTools } from "@/components/tool/RelatedTools";
 import { ToolPageShell } from "@/components/tool/ToolPageShell";
 import { getTool } from "@/config/tool-catalog";
 import { JpgToPngConverter } from "@/features/image/jpg-to-png/JpgToPngConverter";
+import { locales } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "JPG PNG 변환기 - 여러 장 무료 변환",
   description:
     "JPG와 JPEG 이미지를 PNG로 무료 변환하세요. 최대 10개 파일을 한 번에 처리하며 원본 이미지는 서버에 업로드되지 않습니다.",
-  alternates: { canonical: "/jpg-to-png" },
+  //  ⚠️ hreflang은 양방향으로 맞물릴 때만 구글이 인정한다. /en/jpg-to-png 쪽은 8개 언어를
+  //  선언하는데 이 한국어 페이지가 되받지 않아, jpg-to-png의 다국어 연결이 통째로 무효였다.
+  //  로케일판이 있는 도구에만 선언한다 — 없는 언어를 선언하면 404를 가리키게 된다.
+  alternates: {
+    canonical: "/jpg-to-png",
+    languages: Object.fromEntries(
+      locales.map((locale) => [
+        locale === "ko" ? "ko-KR" : locale,
+        locale === "ko" ? `${siteConfig.url}/jpg-to-png` : `${siteConfig.url}/${locale}/jpg-to-png`,
+      ])
+    ),
+  },
   openGraph: {
     title: "JPG PNG 변환기 - 여러 장 무료 변환",
     description: "여러 JPG 이미지를 브라우저에서 안전하고 빠르게 PNG로 변환합니다.",
@@ -51,6 +63,15 @@ export default function JpgToPngPage() {
     browserRequirements: "JavaScript 지원 브라우저",
     offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     featureList: ["최대 10개 일괄 변환", "서버 업로드 없는 브라우저 처리", "ZIP 일괄 다운로드"],
+  };
+  // 다른 도구 페이지(ToolSeoContent)와 같은 형태의 breadcrumb. 이 페이지만 자체 JSON-LD라 빠져 있었다.
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "OneDay Tools", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "JPG PNG 변환기", item: `${siteConfig.url}/jpg-to-png` },
+    ],
   };
   const faqSchema = {
     "@context": "https://schema.org",
@@ -101,6 +122,7 @@ export default function JpgToPngPage() {
         </div>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </>
   );

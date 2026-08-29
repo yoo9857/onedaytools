@@ -9,9 +9,11 @@ import { locales } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "All in One Tool | 이미지·PDF·파일 작업을 한곳에서",
-  description: "OneDay Tools는 JPG·PNG 변환, 이미지 압축과 크기 조절, PDF·오디오 작업을 제공하는 All in One 온라인 파일 도구입니다.",
-  keywords: ["온라인 이미지 도구", "JPG PNG 변환", "이미지 압축", "파일 변환", "All in One Tool"],
+  //  검색 결과에서 클릭을 가르는 건 "무료"와 "가입 없음"이다. 둘을 제목 앞쪽으로 올린다.
+  //  단, 전부 영구 무료라고 약속하지는 않는다(서버 연산이 드는 기능은 나중에 유료화 여지를 남긴다).
+  title: "무료 PDF·이미지 변환 도구 | 가입 없이 바로 사용",
+  description: "회원가입 없이 무료로 쓰는 PDF·이미지 도구. PDF 합치기·압축·변환과 JPG·PNG 변환을 브라우저에서 바로 처리하며, 파일을 서버에 올리지 않습니다.",
+  keywords: ["무료 PDF 도구", "PDF 합치기", "PDF 압축", "JPG PNG 변환", "온라인 이미지 도구", "회원가입 없는 파일 변환"],
   alternates: {
     canonical: "/",
     languages: Object.fromEntries(locales.map((locale) => [locale === "ko" ? "ko-KR" : locale, locale === "ko" ? siteConfig.url : `${siteConfig.url}/${locale}`])),
@@ -32,26 +34,35 @@ export default function Home() {
         <div className="hero-orb hero-orb--one" />
         <div className="hero-orb hero-orb--two" />
         <div className="shell hero-inner">
-          <div className="eyebrow"><Sparkles size={14} /> OneDay Tools · All in One Tool</div>
-          <h1>파일 작업을 한곳에서,<br /><span>더 간단하게.</span></h1>
-          <p className="hero-description">
-            이미지·PDF·오디오 도구를 설치 없이 브라우저에서 바로 처리하세요.<br className="desktop-break" /> 필요한 파일 작업을 한곳에서 빠르고 안전하게 끝낼 수 있습니다.
-          </p>
-          <div className="hero-actions">
-            <Link className="primary-button primary-button--large" href="/jpg-to-png">
-              첫 번째 도구 사용하기 <ArrowRight size={18} />
-            </Link>
-            <a className="text-link" href="#tools">모든 도구 보기</a>
+          <div className="hero-copy">
+            {/*  무료를 h1 액센트 줄로 올린다. "영원히 공짜"가 아니라 "가입 없이 지금 바로 무료"로
+                 잡아, 나중에 서버 연산이 드는 기능(OCR 등)을 유료화해도 말이 바뀌지 않게 한다. */}
+            <p className="eyebrow"><Sparkles size={15} /> 회원가입 없이 지금 바로</p>
+            <h1>
+              <span className="hero-title-line">PDF·이미지 파일 작업,</span>
+              <span className="hero-title-line hero-title-accent">무료로 지금 바로.</span>
+            </h1>
+            <p className="hero-description">
+              <span>회원가입도, 설치도, 워터마크도 없습니다. 브라우저에서 바로 처리합니다.</span>
+              <span>파일이 기기 밖으로 나가지 않아 업로드를 기다릴 필요도 없습니다.</span>
+            </p>
+            <div className="hero-actions">
+              <Link className="primary-button primary-button--large" href="/jpg-to-png">
+                첫 번째 도구 사용하기 <ArrowRight size={18} />
+              </Link>
+              <a className="text-link" href="#tools">모든 도구 보기</a>
+            </div>
+            <ul className="trust-list" aria-label="서비스 특징">
+              <li><Check size={15} /> 무료 사용</li>
+              <li><Check size={15} /> 회원가입 없음</li>
+              <li><Check size={15} /> 워터마크 없음</li>
+              <li><Check size={15} /> 파일 업로드 없음</li>
+            </ul>
           </div>
-          <ul className="trust-list" aria-label="서비스 특징">
-            <li><Check size={15} /> 무료 사용</li>
-            <li><Check size={15} /> 파일 업로드 없음</li>
-            <li><Check size={15} /> 모바일 지원</li>
-          </ul>
           <div className="hero-visual">
             {/* Product vision artwork supplied for the OneDay Tools homepage. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/marketing/main_first.png" alt="OneDay Tools All in One 문서 작업 화면" width="1440" height="1080" fetchPriority="high" />
+            <img src="/marketing/main_first.png" alt="OneDay Tools All in One 문서 작업 화면" width="1448" height="1086" fetchPriority="high" />
           </div>
         </div>
       </section>
