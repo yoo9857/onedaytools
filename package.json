@@ -1,0 +1,30 @@
+{
+  "name": "onedaytools",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && node scripts/prepare-standalone.mjs",
+    "start": "node .next/standalone/server.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "fflate": "0.8.2",
+    "lucide-react": "1.37.0",
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.3",
+    "typescript": "6.0.3"
+  }
+}
