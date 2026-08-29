@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { categories } from "@/config/tool-catalog";
+import { locales } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -12,6 +13,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   return [
     ...staticPages,
+    ...locales.filter((locale) => locale !== "ko").flatMap((locale) => [
+      { url: `${siteConfig.url}/${locale}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.9 },
+      { url: `${siteConfig.url}/${locale}/jpg-to-png`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
+    ]),
     ...categories.map((category) => ({
       url: `${siteConfig.url}/category/${category.id}`,
       lastModified: now,
