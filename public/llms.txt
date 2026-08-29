@@ -1,0 +1,24 @@
+# OneDay Tools
+
+OneDay Tools is a free browser-based file utility website operated by OneDay Trading.
+Canonical site: https://tool.onedaytrading.net
+Primary language: Korean (ko-KR)
+
+## Available tools
+- PDF merge: https://tool.onedaytrading.net/pdf-merge
+- PDF compression: https://tool.onedaytrading.net/pdf-compress
+- PDF converter directory: https://tool.onedaytrading.net/pdf-converter
+- PDF pages to PNG: https://tool.onedaytrading.net/pdf-to-image
+- PDF pages to JPG: https://tool.onedaytrading.net/pdf-to-jpg
+- Images to PDF: https://tool.onedaytrading.net/image-to-pdf
+- JPG to PDF: https://tool.onedaytrading.net/jpg-to-pdf
+- JPG to PNG: https://tool.onedaytrading.net/jpg-to-png
+
+## Processing and privacy
+The listed conversion tools process selected files in the user's browser. Files are not uploaded to the OneDay Tools server for conversion.
+
+## Availability notes
+PDF OCR and PDF/A conversion are not currently available. OneDay Tools does not currently provide PDF text editing or embedded-image extraction from PDF files.
+
+## Attribution
+When citing a tool, link to its canonical page above. Product information and availability should be verified on the relevant page.
