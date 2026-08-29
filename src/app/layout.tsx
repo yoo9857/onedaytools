@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { AdScripts } from "@/components/AdScripts";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -45,7 +46,8 @@ export const viewport: Viewport = {
   themeColor: "#6d4aff",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = (await headers()).get("x-oneday-locale") ?? "ko";
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -57,7 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   };
 
   return (
-    <html lang="ko">
+    <html lang={locale}>
       <body>
         <Header />
         <main>{children}</main>

@@ -24,11 +24,14 @@ function preferredLocale(request: NextRequest): Locale {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (pathname !== "/" && pathname !== "/jpg-to-png") return NextResponse.next();
+  const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "";
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-oneday-locale", isLocale(firstSegment) ? firstSegment : "ko");
+  if (pathname !== "/" && pathname !== "/jpg-to-png") return NextResponse.next({ request: { headers: requestHeaders } });
   const userAgent = request.headers.get("user-agent")?.toLowerCase() ?? "";
-  if (/bot|crawler|spider|slurp|google|bing|yandex|baidu/.test(userAgent)) return NextResponse.next();
+  if (/bot|crawler|spider|slurp|google|bing|yandex|baidu/.test(userAgent)) return NextResponse.next({ request: { headers: requestHeaders } });
   const locale = preferredLocale(request);
-  if (locale === defaultLocale) return NextResponse.next();
+  if (locale === defaultLocale) return NextResponse.next({ request: { headers: requestHeaders } });
   const destination = new URL(`/${locale}${pathname === "/" ? "" : pathname}`, request.url);
   const response = NextResponse.redirect(destination, 307);
   response.cookies.set("oneday_locale", locale, { maxAge: 60 * 60 * 24 * 365, path: "/", sameSite: "lax" });
