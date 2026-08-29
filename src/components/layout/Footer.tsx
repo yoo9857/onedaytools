@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories } from "@/config/tool-catalog";
+import { LanguageLinks } from "./LanguageLinks";
 
 export function Footer() {
   return (
@@ -20,6 +21,7 @@ export function Footer() {
           <a href="https://onedaytrading.net" rel="noopener noreferrer">OneDayTrading</a>
         </nav>
         <p className="copyright">© {new Date().getFullYear()} OneDay Tools</p>
+        <LanguageLinks />
       </div>
     </footer>
   );
