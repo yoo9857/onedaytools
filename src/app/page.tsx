@@ -62,6 +62,20 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="story-section" aria-label="OneDay Tools 사용 경험">
+        <div className="shell">
+          <div className="story-intro"><p className="section-kicker">ONE DAY, ONE WORKSPACE</p><h2>복잡한 파일 작업을<br /><span>하나의 흐름으로.</span></h2><p>찾고, 바꾸고, 정리하고, 완성하는 순간까지.<br />OneDay Tools는 필요한 도구를 한곳에 연결합니다.</p></div>
+          <div className="story-list">
+            {[
+              ["first.png", "필요한 도구를 바로 찾고", "검색 한 번으로 이미지 변환부터 문서 작업까지 필요한 기능을 빠르게 시작하세요."],
+              ["first_2.png", "브라우저에서 바로 편집하고", "별도 프로그램을 설치하지 않아도 익숙한 화면에서 파일을 다듬을 수 있습니다."],
+              ["first_3.png", "어디서든 파일을 이어서 보고", "데스크톱과 모바일에 맞춘 경험으로 장소와 기기에 구애받지 않고 작업하세요."],
+              ["first_4.png", "완성된 결과를 안전하게 저장하세요", "변환이 끝난 파일을 원하는 형식으로 내려받고 다음 작업으로 자연스럽게 이어갑니다."],
+            ].map(([image, title, description], index) => <article className={`story-row${index % 2 ? " story-row--reverse" : ""}`} key={image}><div className="story-copy"><span className="story-number">0{index + 1}</span><h3>{title}</h3><p>{description}</p></div><div className="story-image"><img src={`/marketing/${image}`} alt={title} loading="lazy" width="1280" height="1280" /></div></article>)}
+          </div>
+        </div>
+      </section>
+
       <section className="category-section" aria-label="도구 카테고리">
         <div className="shell"><CategoryStrip /></div>
       </section>
