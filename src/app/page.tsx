@@ -10,10 +10,10 @@ export default function Home() {
         <div className="hero-orb hero-orb--one" />
         <div className="hero-orb hero-orb--two" />
         <div className="shell hero-inner">
-          <div className="eyebrow"><Sparkles size={14} /> 매일 쓰는 도구를 한곳에</div>
-          <h1>파일 작업은 더 가볍게,<br /><span>결과는 더 빠르게.</span></h1>
+          <div className="eyebrow"><Sparkles size={14} /> OneDay Tools · All in One Tool</div>
+          <h1>파일 작업을 한곳에서,<br /><span>더 간단하게.</span></h1>
           <p className="hero-description">
-            이미지부터 오디오·영상, PDF, 금융 계산까지.<br className="desktop-break" /> 설치 없이 필요한 작업을 브라우저에서 바로 처리하세요.
+            이미지·PDF·오디오 도구를 설치 없이 브라우저에서 바로 처리하세요.<br className="desktop-break" /> 필요한 파일 작업을 한곳에서 빠르고 안전하게 끝낼 수 있습니다.
           </p>
           <div className="hero-actions">
             <Link className="primary-button primary-button--large" href="/jpg-to-png">
