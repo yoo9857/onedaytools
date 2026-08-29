@@ -17,6 +17,8 @@ import {
   JPG_TO_PNG_LIMITS,
 } from "./converter";
 import type { ConvertedPng } from "./types";
+import { converterCopy } from "@/lib/i18n-content";
+import type { Locale } from "@/lib/i18n";
 
 function saveBlob(blob: Blob, filename: string, temporaryUrl?: string) {
   const url = temporaryUrl ?? URL.createObjectURL(blob);
@@ -29,7 +31,8 @@ function saveBlob(blob: Blob, filename: string, temporaryUrl?: string) {
   if (!temporaryUrl) URL.revokeObjectURL(url);
 }
 
-export function JpgToPngConverter() {
+export function JpgToPngConverter({ locale = "ko" }: { locale?: Locale }) {
+  const copy = converterCopy[locale];
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<ConvertedPng[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -54,7 +57,7 @@ export function JpgToPngConverter() {
 
     const remainingSlots = JPG_TO_PNG_LIMITS.maxFiles - results.length;
     if (remainingSlots <= 0) {
-      setError(`한 번에 최대 ${JPG_TO_PNG_LIMITS.maxFiles}개까지 변환할 수 있습니다.`);
+      setError(copy.tooMany(JPG_TO_PNG_LIMITS.maxFiles));
       return;
     }
 
@@ -66,9 +69,9 @@ export function JpgToPngConverter() {
     );
 
     const warnings: string[] = [];
-    if (incoming.length > remainingSlots) warnings.push(`최대 ${JPG_TO_PNG_LIMITS.maxFiles}개까지만 선택했습니다.`);
-    if (invalidType.length) warnings.push(`JPG가 아닌 파일 ${invalidType.length}개를 제외했습니다.`);
-    if (oversized.length) warnings.push(`30MB를 넘는 파일 ${oversized.length}개를 제외했습니다.`);
+    if (incoming.length > remainingSlots) warnings.push(copy.truncated);
+    if (invalidType.length) warnings.push(copy.invalid(invalidType.length));
+    if (oversized.length) warnings.push(copy.oversized(oversized.length));
     if (warnings.length) setError(warnings.join(" "));
     if (!valid.length) return;
 
@@ -87,7 +90,7 @@ export function JpgToPngConverter() {
     }
 
     setResults((previous) => [...previous, ...converted]);
-    if (failed) setError(`${failed}개 파일을 변환하지 못했습니다. 다른 JPG 파일로 다시 시도해 주세요.`);
+    if (failed) setError(copy.failed(failed));
     setIsConverting(false);
   }
 
@@ -154,12 +157,12 @@ export function JpgToPngConverter() {
           onChange={onInputChange}
         />
         <span className="upload-icon"><ImagePlus size={30} strokeWidth={1.7} /></span>
-        <h2>{isConverting ? `${progress.current} / ${progress.total} 변환 중…` : "JPG 이미지를 여기에 놓으세요"}</h2>
-        <p>최대 10개 이미지를 한 번에 선택할 수 있습니다.</p>
+        <h2>{isConverting ? `${progress.current} / ${progress.total} ${copy.converting}` : copy.prompt}</h2>
+        <p>{copy.tooMany(JPG_TO_PNG_LIMITS.maxFiles)}</p>
         <button className="primary-button" type="button" disabled={isConverting} onClick={() => inputRef.current?.click()}>
-          <FileImage size={18} /> {isConverting ? "변환 중…" : results.length ? "파일 더 추가" : "JPG 파일 선택"}
+          <FileImage size={18} /> {isConverting ? copy.converting : results.length ? copy.addMore : copy.choose}
         </button>
-        <span className="file-limit">JPG·JPEG · 파일당 최대 30MB</span>
+        <span className="file-limit">{copy.limit}</span>
         {isConverting ? <div className="progress-track" aria-label={`변환 진행률 ${progress.current}/${progress.total}`}><span style={{ width: `${(progress.current / progress.total) * 100}%` }} /></div> : null}
       </div>
 
@@ -168,14 +171,14 @@ export function JpgToPngConverter() {
       {results.length ? (
         <div className="conversion-results" aria-live="polite">
           <div className="results-header">
-            <div><span className="success-dot" /> <strong>{results.length}개 변환 완료</strong></div>
+            <div><span className="success-dot" /> <strong>{results.length}{copy.converted}</strong></div>
             <div className="results-actions">
               {results.length > 1 ? (
                 <button type="button" onClick={() => void downloadZip()} disabled={isZipping}>
-                  <Archive size={16} /> {isZipping ? "ZIP 생성 중" : "전체 ZIP"}
+                  <Archive size={16} /> {isZipping ? copy.zipBuilding : copy.zip}
                 </button>
               ) : null}
-              <button type="button" onClick={reset}><RotateCcw size={15} /> 전체 지우기</button>
+              <button type="button" onClick={reset}><RotateCcw size={15} /> {copy.reset}</button>
             </div>
           </div>
           <ul className="result-list">
@@ -188,12 +191,12 @@ export function JpgToPngConverter() {
                 </div>
                 <div className="result-info">
                   <strong title={result.outputName}>{result.outputName}</strong>
-                  <span>{result.width.toLocaleString()} × {result.height.toLocaleString()}px · {formatBytes(result.outputSize)}</span>
+                  <span>{result.width.toLocaleString()} × {result.height.toLocaleString()}{copy.pixels} · {formatBytes(result.outputSize)}</span>
                 </div>
-                <button className="result-download" type="button" onClick={() => saveBlob(result.blob, result.outputName, result.previewUrl)} aria-label={`${result.outputName} 다운로드`}>
-                  <Download size={17} /> <span>다운로드</span>
+                <button className="result-download" type="button" onClick={() => saveBlob(result.blob, result.outputName, result.previewUrl)} aria-label={`${result.outputName} ${copy.download}`}>
+                  <Download size={17} /> <span>{copy.download}</span>
                 </button>
-                <button className="result-remove" type="button" onClick={() => removeResult(result.id)} aria-label={`${result.outputName} 삭제`}><Trash2 size={16} /></button>
+                <button className="result-remove" type="button" onClick={() => removeResult(result.id)} aria-label={`${result.outputName} ${copy.remove}`}><Trash2 size={16} /></button>
               </li>
             ))}
           </ul>
@@ -202,7 +205,7 @@ export function JpgToPngConverter() {
 
       <div className="privacy-note">
         <LockKeyhole size={17} />
-        <span><strong>파일은 외부로 전송되지 않습니다.</strong> 모든 변환은 브라우저 안에서 처리됩니다.</span>
+        <span>{copy.privacy}</span>
       </div>
     </section>
   );
