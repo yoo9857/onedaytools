@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+
+#DaumWebMasterTool:d4a45b25b100b092b2f4c163b130f9d3b6dd4edc8dff4149a60e98ede937fe3a:Xwy8raAG2eH9cVbufPLhew==
+
+Sitemap: https://tool.onedaytrading.net/sitemap.xml
