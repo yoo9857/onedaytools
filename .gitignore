@@ -27,3 +27,8 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# 배포용 임시 tarball — 산출물이라 저장소에 넣지 않는다.
+release-*.tar
+# 루트 아트워크는 public/marketing 의 중복본이다. 원본은 그쪽이 단일 출처.
+/*.png
