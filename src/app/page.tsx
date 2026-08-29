@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   },
 };
 
+const homeFaq = [
+  ["OneDay Tools는 어떤 서비스인가요?", "이미지 변환·압축·크기 조절과 PDF·오디오 작업을 한곳에서 제공하는 All in One 온라인 파일 도구입니다."],
+  ["이미지 파일이 서버에 저장되나요?", "현재 JPG→PNG 변환은 브라우저 내부에서 처리되며 원본 이미지가 OneDay Tools 서버로 전송되지 않습니다."],
+  ["휴대폰에서도 사용할 수 있나요?", "반응형 화면으로 스마트폰과 태블릿에서도 파일 선택, 변환, 다운로드를 사용할 수 있습니다."],
+];
+
 export default function Home() {
   const imageTools = getToolsByCategory("image");
   return (
@@ -64,13 +70,13 @@ export default function Home() {
 
       <section className="story-section" aria-label="OneDay Tools 사용 경험">
         <div className="shell">
-          <div className="story-intro"><p className="section-kicker">ONE DAY, ONE WORKSPACE</p><h2>복잡한 파일 작업을<br /><span>하나의 흐름으로.</span></h2><p>찾고, 바꾸고, 정리하고, 완성하는 순간까지.<br />OneDay Tools는 필요한 도구를 한곳에 연결합니다.</p></div>
+          <div className="story-intro"><p className="section-kicker">ONE DAY, ONE WORKSPACE</p><h2>복잡한 파일 작업을<br /><span>하나의 흐름으로.</span></h2><p>JPG PNG 변환, 이미지 압축, 크기 조절처럼 반복되는 작업을 설치와 회원가입 없이 처리하세요. OneDay Tools는 개인 사용자와 팀의 문서 흐름을 빠르게 만드는 All in One 도구 모음입니다.</p></div>
           <div className="story-list">
             {[
-              ["first.png", "필요한 도구를 바로 찾고", "검색 한 번으로 이미지 변환부터 문서 작업까지 필요한 기능을 빠르게 시작하세요."],
-              ["first_2.png", "브라우저에서 바로 편집하고", "별도 프로그램을 설치하지 않아도 익숙한 화면에서 파일을 다듬을 수 있습니다."],
-              ["first_3.png", "어디서든 파일을 이어서 보고", "데스크톱과 모바일에 맞춘 경험으로 장소와 기기에 구애받지 않고 작업하세요."],
-              ["first_4.png", "완성된 결과를 안전하게 저장하세요", "변환이 끝난 파일을 원하는 형식으로 내려받고 다음 작업으로 자연스럽게 이어갑니다."],
+              ["first.png", "필요한 도구를 바로 찾고", "파일 형식과 작업 목적을 기준으로 도구를 찾을 수 있습니다. 이미지 작업을 처음 하는 사용자도 단계별 안내를 따라 시작합니다."],
+              ["first_2.png", "브라우저에서 바로 편집하고", "별도 프로그램 설치 없이 JPG·PNG 파일을 변환합니다. 처리 과정과 파일 제한을 화면에서 명확하게 안내합니다."],
+              ["first_3.png", "어디서든 파일을 이어서 보고", "데스크톱·태블릿·스마트폰 화면에 맞춰 업로드와 다운로드 흐름을 최적화했습니다. 이동 중에도 필요한 작업을 끝낼 수 있습니다."],
+              ["first_4.png", "완성된 결과를 안전하게 저장하세요", "변환된 파일은 개별 다운로드하거나 ZIP으로 묶어 저장할 수 있습니다. 브라우저 처리 도구는 원본을 서버에 남기지 않습니다."],
             ].map(([image, title, description], index) => <article className={`story-row${index % 2 ? " story-row--reverse" : ""}`} key={image}><div className="story-copy"><span className="story-number">0{index + 1}</span><h3>{title}</h3><p>{description}</p></div><div className="story-image"><img src={`/marketing/${image}`} alt={title} loading="lazy" width="1280" height="1280" /></div></article>)}
           </div>
         </div>
@@ -78,15 +84,6 @@ export default function Home() {
 
       <section className="category-section" aria-label="도구 카테고리">
         <div className="shell"><CategoryStrip /></div>
-      </section>
-
-      <section className="product-vision-section" aria-labelledby="product-vision-title">
-        <div className="shell">
-          <div className="section-heading"><div><p className="section-kicker">ONE WORKSPACE</p><h2 id="product-vision-title">변환부터 편집까지, 하나의 작업 공간</h2></div><p>OneDay Tools가 만들어갈 All in One 경험.</p></div>
-          <div className="vision-grid">
-            {["first.png", "first_2.png", "first_3.png", "first_4.png"].map((image, index) => <figure key={image} className="vision-card"><img src={`/marketing/${image}`} alt={["문서와 도구를 한곳에서 찾는 작업 화면", "이미지와 문서를 편집하는 작업 화면", "파일을 정리하고 모바일에서 확인하는 화면", "문서를 다양한 형식으로 변환하는 화면"][index]} loading="lazy" width="1280" height="1280" /><figcaption>{["모든 도구를 한곳에서", "직관적인 편집", "데스크톱과 모바일", "빠른 파일 변환"][index]}</figcaption></figure>)}
-          </div>
-        </div>
       </section>
 
       <section className="tools-section" id="tools">
@@ -121,6 +118,8 @@ export default function Home() {
           </article>
         </div>
       </section>
+      <section className="home-faq content-section" aria-labelledby="home-faq-title"><div className="shell article-shell"><p className="section-kicker">HELP CENTER</p><h2 id="home-faq-title">자주 묻는 질문</h2><div className="faq-list">{homeFaq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: homeFaq.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }) }} />
     </>
   );
 }
