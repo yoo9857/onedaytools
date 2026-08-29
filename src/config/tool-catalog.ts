@@ -122,10 +122,106 @@ export const tools: ToolDefinition[] = [
     shortName: "PDF 병합",
     description: "여러 PDF 문서를 원하는 순서로 하나로 합칩니다.",
     category: "document",
-    status: "planned",
+    status: "live",
     icon: FileArchive,
     accent: "orange",
     keywords: ["pdf", "pdf 합치기", "문서 병합"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-compress",
+    name: "PDF 압축",
+    shortName: "PDF 압축",
+    description: "PDF 페이지를 최적화해 파일 용량을 줄입니다.",
+    category: "document",
+    status: "live",
+    icon: ImageDown,
+    accent: "orange",
+    keywords: ["compress pdf", "pdf 압축", "pdf 용량 줄이기"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-converter",
+    name: "PDF 변환기",
+    shortName: "PDF Converter",
+    description: "PDF와 이미지 사이에서 필요한 변환 도구를 선택합니다.",
+    category: "document",
+    status: "live",
+    icon: FileOutput,
+    accent: "violet",
+    keywords: ["pdf converter", "pdf 변환", "파일 변환"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-ocr",
+    name: "PDF OCR",
+    shortName: "PDF OCR",
+    description: "스캔 PDF에서 검색 가능한 텍스트를 인식합니다.",
+    category: "document",
+    status: "building",
+    icon: FileArchive,
+    accent: "blue",
+    keywords: ["pdf ocr", "문자 인식", "스캔 pdf"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-to-pdfa",
+    name: "PDF → PDF/A",
+    shortName: "PDF to PDF/A",
+    description: "장기 보관용 PDF/A 형식으로 변환합니다.",
+    category: "document",
+    status: "planned",
+    icon: FileArchive,
+    accent: "mint",
+    keywords: ["pdfa", "pdf a 변환", "장기 보관 pdf"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-to-image",
+    name: "PDF → 이미지",
+    shortName: "PDF to Image",
+    description: "PDF의 모든 페이지를 고화질 PNG 이미지로 변환합니다.",
+    category: "document",
+    status: "live",
+    icon: FileImage,
+    accent: "blue",
+    keywords: ["pdf image", "pdf png", "pdf 이미지 변환"],
+    localProcessing: true,
+  },
+  {
+    slug: "pdf-to-jpg",
+    name: "PDF → JPG",
+    shortName: "PDF to JPG",
+    description: "PDF 페이지를 공유하기 쉬운 JPG 이미지로 변환합니다.",
+    category: "document",
+    status: "live",
+    icon: FileImage,
+    accent: "orange",
+    keywords: ["pdf jpg", "pdf jpeg", "pdf 사진 변환"],
+    localProcessing: true,
+  },
+  {
+    slug: "image-to-pdf",
+    name: "이미지 → PDF",
+    shortName: "Image to PDF",
+    description: "JPG·PNG 이미지를 한 개의 PDF 문서로 만듭니다.",
+    category: "document",
+    status: "live",
+    icon: FileOutput,
+    accent: "violet",
+    keywords: ["image pdf", "이미지 pdf 변환", "png pdf"],
+    localProcessing: true,
+  },
+  {
+    slug: "jpg-to-pdf",
+    name: "JPG → PDF",
+    shortName: "JPG to PDF",
+    description: "여러 JPG 사진을 순서대로 하나의 PDF로 변환합니다.",
+    category: "document",
+    status: "live",
+    icon: FileOutput,
+    accent: "rose",
+    keywords: ["jpg pdf", "jpeg pdf", "사진 pdf 변환"],
     localProcessing: true,
   },
   {
@@ -154,10 +250,19 @@ export function getTool(slug: string) {
   return tools.find((tool) => tool.slug === slug);
 }
 
+/**
+ *  "함께 쓰면 좋은 도구" — 같은 카테고리 우선, 모자라면 다른 카테고리의 live 도구로 채운다.
+ *
+ *  ⚠️ live만 고르는 게 핵심이다. ToolCard는 준비 중인 도구를 링크가 아닌 카드로 렌더하므로
+ *  (라우트가 없어 404가 되는 걸 막는 장치), 카테고리만 보고 뽑으면 관련 카드가 전부 죽은 카드가 되어
+ *  그 페이지의 내부 링크가 0이 된다. 실측: jpg-to-png는 같은 image 카테고리의 나머지 셋이 모두
+ *  building/planned라 관련 도구 영역에서 나가는 링크가 하나도 없었다.
+ */
 export function getRelatedTools(slug: string, limit = 3) {
   const current = getTool(slug);
   if (!current) return [];
-  return tools
-    .filter((tool) => tool.slug !== slug && tool.category === current.category)
-    .slice(0, limit);
+  const live = tools.filter((tool) => tool.slug !== slug && tool.status === "live");
+  const sameCategory = live.filter((tool) => tool.category === current.category);
+  const others = live.filter((tool) => tool.category !== current.category);
+  return [...sameCategory, ...others].slice(0, limit);
 }
